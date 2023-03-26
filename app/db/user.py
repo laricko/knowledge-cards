@@ -26,10 +26,6 @@ user = Table(
     Column("updated", DateTime),
 )
 
-# function `update_datetime_updated_column`
-# trigger `update_datetime_updated_column_trigger`
-# look in `app/alembic/versions/c22ed0931890_add_created_and_updated_columns_to_user.py`
-
 
 token = Table(
     "token",
