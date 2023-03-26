@@ -23,15 +23,11 @@ class Settings(BaseSettings):
 
     ASYNC_DRIVER_DATABASE_URL: PostgresDsn = f"postgresql+asyncpg://{_POSTGRES_USER}:{_POSTGRES_PASSWORD}@db:5432/{_POSTGRES_DB}"
 
-    TEST_DATABASE_URL: PostgresDsn = f"postgresql://test:test@db:5432/test"
-
     environ["DATABASE_URL"] = DATABASE_URL
 
     JWT_EXPIRE_MINUTES = config("JWT_EXPIRE_MINUTES", int)
     ALGORITHM = config("ALGORITHM")
     SECRET_KEY = config("SECRET_KEY")
-
-    TESTING: bool = config("TESTING", bool, False)
 
 
 @lru_cache()

@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 
 from db.user import token
 
-from .send_email import send_email
+from utils.send_email import send_email
 
 
 def create_verification_token_and_send_email(
