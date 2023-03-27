@@ -1,5 +1,3 @@
-from enum import Enum
-
 from fastapi import Depends, APIRouter, status
 from sqlalchemy.orm import Session
 

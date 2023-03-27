@@ -12,7 +12,7 @@ def get_cards_by_user(
     user_id: int,
     session: Session,
     *,
-    ordering: CardsOrdering,
+    ordering: str,
     title: str | None = None,
     category_id: int | None = None,
     limit: int = 20,
@@ -41,9 +41,9 @@ def create_card(user_id: int, data: CardIn, session: Session) -> dict:
         .values(user_id=user_id, **data.dict())
         .returning(literal_column("*"))
     )
-    r = session.execute(query)
+    cur = session.execute(query)
     session.commit()
-    return r.first()._asdict()
+    return cur.first()._asdict()
 
 
 def update_card(id: int, data: CardUpdate, session: Session) -> dict:
@@ -55,12 +55,13 @@ def update_card(id: int, data: CardUpdate, session: Session) -> dict:
         .where(card.c.id == id)
         .returning(literal_column("*"))
     )
-    r = session.execute(query)
+    cur = session.execute(query)
     session.commit()
-    return r.first()._asdict()
+    return cur.first()._asdict()
 
 
 def delete_card(id: int, session: Session) -> None:
     query = delete(card).where(card.c.id == id)
     session.execute(query)
+    session.commit()
     return
