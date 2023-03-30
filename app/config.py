@@ -8,6 +8,10 @@ from pydantic import BaseSettings, PostgresDsn
 config = Config("development.env")
 
 
+class SystemCategories(BaseSettings):
+    english = "Language English"
+
+
 class Settings(BaseSettings):
     PROJECT_TITLE = config("PROJECT_TITLE", str, "")
     SITE_PORT = config("SITE_PORT", int)
@@ -28,6 +32,8 @@ class Settings(BaseSettings):
     SECRET_KEY = config("SECRET_KEY")
 
     OPENAI_API_KEY = config("OPENAI_API_KEY", str)
+
+    system_categories = ["Language English", "Language Russian"]
 
 
 @lru_cache()

@@ -51,3 +51,19 @@ async def update_category(
 ):
     category = crud.update_category(id, data, session)
     return category
+
+
+@category_router.get("/system", response_model=list[Category])
+async def system_categories(session: Session = Depends(get_session)):
+    categories = crud.get_system_categories(session)
+    return categories
+
+
+@category_router.post("/{id}/add-system")
+async def add_system_category(
+    id: int,
+    user: User = Depends(get_current_user_is_verified),
+    session: Session = Depends(get_session),
+):
+    crud.add_system_category(id, user.id, session)
+    return {"detail": "success"}

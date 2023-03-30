@@ -26,5 +26,5 @@ class CategoryUpdate(BaseModel):
 class Category(CategoryIn):
     id: int
     created: datetime
-    user_id: int
+    user_id: int | None
     need_chatgpt: bool
