@@ -5,18 +5,18 @@ from sqlalchemy import insert, literal_column, select, update, delete
 
 from utils.get_ordering import get_ordering
 from db.card import card
-from schemas.card import CardIn, CardsOrdering, CardUpdate
+from schemas.card import CardIn, CardUpdate
 
 
 def get_cards_by_user(
     user_id: int,
     session: Session,
     *,
-    ordering: str,
-    title: str | None = None,
-    category_id: int | None = None,
-    limit: int = 20,
-    offset: int = 0,
+    title: str | None,
+    category_id: int,
+    ordering: str | None,
+    limit: int,
+    skip: int,
 ) -> list[dict]:
     filters = []
     if title:
@@ -28,7 +28,7 @@ def get_cards_by_user(
         .filter(*filters, card.c.user_id == user_id)
         .order_by(get_ordering(card, ordering))
         .limit(limit)
-        .offset(offset)
+        .offset(skip)
     )
     cur = session.execute(query)
     rows = cur.mappings().all()

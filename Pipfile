@@ -13,6 +13,7 @@ asyncpg = "*"
 passlib = "*"
 python-jose = {extras = ["cryptography"], version = "*"}
 pydantic = {extras = ["email"], version = "*"}
+openai = "*"
 
 [dev-packages]
 pytest = "*"

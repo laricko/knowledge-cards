@@ -22,6 +22,8 @@ user = Table(
     Column("first_name", String(63)),
     Column("last_name", String(63)),
     Column("verified", Boolean, server_default="f", nullable=False),
+    Column("subscriber", Boolean, server_default="f", nullable=False),
+    Column("subscribe_end", DateTime),
     Column("created", DateTime, server_default=func.now()),
     Column("updated", DateTime),
 )

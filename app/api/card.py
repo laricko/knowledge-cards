@@ -14,11 +14,11 @@ card_router = APIRouter(
 
 @card_router.get("/my", response_model=list[Card])
 async def my_cards(
-    ordering: CardsOrdering = CardsOrdering.id,
     title: str | None = None,
     category_id: int | None = None,
+    ordering: CardsOrdering = CardsOrdering.id,
     limit: int = 20,
-    offset: int = 0,
+    skip: int = 0,
     user: User = Depends(get_current_user_is_verified),
     session: Session = Depends(get_session),
 ):
@@ -29,7 +29,7 @@ async def my_cards(
         title=title,
         category_id=category_id,
         limit=limit,
-        offset=offset,
+        skip=skip,
     )
     return cards
 
@@ -45,7 +45,9 @@ async def create_card(
 
 
 @card_router.patch("/{id}", response_model=Card)
-async def update_card(id: int, data: CardUpdate, session: Session = Depends(get_session)):
+async def update_card(
+    id: int, data: CardUpdate, session: Session = Depends(get_session)
+):
     card = crud.update_card(id, data, session)
     return card
 

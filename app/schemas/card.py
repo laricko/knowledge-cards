@@ -19,12 +19,14 @@ class CardIn(BaseModel):
     title: str
     description: str
     category_id: int | None
+    need_chatgpt: bool | None
 
 
 class CardUpdate(BaseModel):
     title: str | None
     description: str | None
     category_id: int | None
+    need_chatgpt: bool | None
 
 
 class Card(CardIn):

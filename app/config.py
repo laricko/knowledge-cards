@@ -21,13 +21,13 @@ class Settings(BaseSettings):
         f"postgresql://{_POSTGRES_USER}:{_POSTGRES_PASSWORD}@db:5432/{_POSTGRES_DB}"
     )
 
-    ASYNC_DRIVER_DATABASE_URL: PostgresDsn = f"postgresql+asyncpg://{_POSTGRES_USER}:{_POSTGRES_PASSWORD}@db:5432/{_POSTGRES_DB}"
-
     environ["DATABASE_URL"] = DATABASE_URL
 
     JWT_EXPIRE_MINUTES = config("JWT_EXPIRE_MINUTES", int)
     ALGORITHM = config("ALGORITHM")
     SECRET_KEY = config("SECRET_KEY")
+
+    OPENAI_API_KEY = config("OPENAI_API_KEY", str)
 
 
 @lru_cache()

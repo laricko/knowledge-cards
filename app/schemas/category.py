@@ -15,8 +15,16 @@ class CategoryOrdering(str, Enum):
 
 class CategoryIn(BaseModel):
     title: str
+    need_chatgpt: bool = False
+
+
+class CategoryUpdate(BaseModel):
+    title: str | None
+    need_chatgpt: bool | None
+
 
 class Category(CategoryIn):
     id: int
     created: datetime
     user_id: int
+    need_chatgpt: bool

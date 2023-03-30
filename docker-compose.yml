@@ -12,7 +12,7 @@ services:
   backend:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: dockerfiles/Dockerfile
     container_name: cards_backend
     env_file: secret.env
     restart: always

@@ -1,32 +1,24 @@
 from datetime import datetime
 
 from fastapi import Depends, APIRouter, HTTPException, status, BackgroundTasks
-from pydantic import BaseModel, EmailStr
 from sqlalchemy import update, literal_column, select
 from sqlalchemy.orm import Session
 
 from dependency import get_session
 from db.user import user as user_db
-from schemas.user import User
+from schemas.user import User, UserIn
 from dependency import get_current_user
 from services.create_verification_token_and_send_email import (
     create_verification_token_and_send_email,
 )
 
 
-user_router = APIRouter(prefix="/user", tags=["user"])
+user_router = APIRouter(prefix="/self-user", tags=["user"])
 
 
 @user_router.get("/", response_model=User)
 async def self_user(user: User = Depends(get_current_user)):
     return user
-
-
-class UserIn(BaseModel):
-    username: str | None
-    email: EmailStr | None
-    first_name: str | None
-    last_name: str | None
 
 
 def check_username_or_email_exists(user_id: int, session: Session, **kwargs) -> None:

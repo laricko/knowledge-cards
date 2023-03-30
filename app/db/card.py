@@ -7,6 +7,7 @@ from sqlalchemy import (
     Integer,
     DateTime,
     func,
+    Boolean,
 )
 
 from .base import metadata
@@ -19,6 +20,7 @@ category = Table(
     Column("title", String(31), nullable=False),
     Column("user_id", ForeignKey("user.id", ondelete="CASCADE"), nullable=False),
     Column("created", DateTime, server_default=func.now(), nullable=False),
+    Column("need_chatgpt", Boolean, server_default="f"),
 )
 
 
@@ -32,6 +34,7 @@ card = Table(
     Column("user_id", ForeignKey("user.id", ondelete="CASCADE"), nullable=False),
     Column("created", DateTime, server_default=func.now(), nullable=False),
     Column("updated", DateTime),
+    Column("need_chatgpt", Boolean, server_default="f"),
 )
 
 card_attachment = Table(

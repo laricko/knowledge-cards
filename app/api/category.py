@@ -2,7 +2,7 @@ from fastapi import Depends, APIRouter, status
 from sqlalchemy.orm import Session
 
 from dependency import get_current_user_is_verified, get_session
-from schemas.category import CategoryIn, Category, CategoryOrdering
+from schemas.category import CategoryIn, Category, CategoryOrdering, CategoryUpdate
 from schemas.user import User
 from crud import category as crud
 
@@ -16,13 +16,15 @@ category_router = APIRouter(
 
 @category_router.get("/my", response_model=list[Category])
 async def my_categories(
-    title: str,
+    title: str | None = None,
     ordering: CategoryOrdering = CategoryOrdering.id,
+    skip: int = 0,
+    limit: int = 20,
     user: User = Depends(get_current_user_is_verified),
     session: Session = Depends(get_session),
 ):
     categories = crud.get_category_for_user(
-        user.id, session, title=title, ordering=ordering
+        user.id, session, title=title, ordering=ordering, limit=limit, skip=skip
     )
     return categories
 
@@ -45,7 +47,7 @@ async def delete_category(id: int, session: Session = Depends(get_session)):
 
 @category_router.patch("/{id}", response_model=Category)
 async def update_category(
-    id: int, data: CategoryIn, session: Session = Depends(get_session)
+    id: int, data: CategoryUpdate, session: Session = Depends(get_session)
 ):
     category = crud.update_category(id, data, session)
     return category

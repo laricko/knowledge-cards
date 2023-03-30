@@ -21,14 +21,18 @@ def get_category_for_user(
     user_id: int,
     session: Session,
     *,
-    title: str | None = None,
-    ordering: str | None = None,
+    title: str | None,
+    ordering: str,
+    limit: int,
+    skip: int,
 ) -> list[dict]:
-    title_filter = [category.c.title.ilike(f"%{title}%")] if title else None
+    title_filter = [category.c.title.ilike(f"%{title}%")] if title else []
     query = (
         select(category)
-        .where(*title_filter, title.c.user_id == user_id)
+        .where(category.c.user_id == user_id, *title_filter)
         .order_by(get_ordering(category, ordering))
+        .limit(limit)
+        .offset(skip)
     )
     cur = session.execute(query)
     rows = cur.mappings().all()
@@ -38,9 +42,9 @@ def get_category_for_user(
 def update_category(category_id: int, data: CategoryIn, session: Session) -> dict:
     query = (
         update(category)
-        .values(**data.dict())
+        .values(**data.dict(exclude_unset=True))
         .where(category.c.id == category_id)
-        .returing(literal_column("*"))
+        .returning(literal_column("*"))
     )
     cur = session.execute(query)
     session.commit()

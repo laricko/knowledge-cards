@@ -12,3 +12,10 @@ class User(BaseModel):
     created: datetime
     updated: datetime | None
     verified: bool
+
+
+class UserIn(BaseModel):
+    username: str | None
+    email: EmailStr | None
+    first_name: str | None
+    last_name: str | None
