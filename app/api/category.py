@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from dependency import get_current_user_is_verified, get_session
 from schemas.category import CategoryIn, Category, CategoryOrdering, CategoryUpdate
 from schemas.user import User
+from schemas.response import DetailResponse
 from crud import category as crud
 
 
@@ -39,7 +40,7 @@ async def create_category(
     return category
 
 
-@category_router.delete("/{id}")
+@category_router.delete("/{id}", response_model=DetailResponse)
 async def delete_category(id: int, session: Session = Depends(get_session)):
     crud.delete_category(id, session)
     return {"detail": "success"}
@@ -59,7 +60,11 @@ async def system_categories(session: Session = Depends(get_session)):
     return categories
 
 
-@category_router.post("/{id}/add-system")
+@category_router.post(
+    "/{id}/add-system",
+    response_model=DetailResponse,
+    status_code=status.HTTP_201_CREATED,
+)
 async def add_system_category(
     id: int,
     user: User = Depends(get_current_user_is_verified),

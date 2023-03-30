@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from dependency import get_current_user_is_verified, get_session
 from schemas.user import User
 from schemas.card import CardIn, Card, CardsOrdering, CardUpdate
+from schemas.response import DetailResponse
 from crud import card as crud
 
 
@@ -52,7 +53,7 @@ async def update_card(
     return card
 
 
-@card_router.delete("/{id}")
+@card_router.delete("/{id}", response_model=DetailResponse)
 async def delete_card(id: int, session: Session = Depends(get_session)):
     crud.delete_card(id, session)
     return {"detail": "success"}

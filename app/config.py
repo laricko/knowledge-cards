@@ -8,10 +8,6 @@ from pydantic import BaseSettings, PostgresDsn
 config = Config("development.env")
 
 
-class SystemCategories(BaseSettings):
-    english = "Language English"
-
-
 class Settings(BaseSettings):
     PROJECT_TITLE = config("PROJECT_TITLE", str, "")
     SITE_PORT = config("SITE_PORT", int)

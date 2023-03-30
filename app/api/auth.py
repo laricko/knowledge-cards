@@ -1,11 +1,10 @@
-from asyncio import create_task
-
 from fastapi import APIRouter, HTTPException, status, Depends, BackgroundTasks
 from pydantic import BaseModel, validator, EmailStr
 from sqlalchemy import insert, select, update
 from sqlalchemy.orm import Session
 
 from schemas.user import User
+from schemas.response import DetailResponse
 from dependency import get_session
 from db.user import user as user_db, token as token_db
 from security import hash_password, verify_passwrod, create_access_token
@@ -82,7 +81,7 @@ async def login(data: LoginData, session: Session = Depends(get_session)):
 verification_router = APIRouter(tags=["verification"])
 
 
-@verification_router.get("/verify-email")
+@verification_router.get("/verify-email", response_model=DetailResponse)
 async def verify_email(token: str, session: Session = Depends(get_session)):
     query_to_get_token = select(token_db).where(token_db.c.value == token)
     token_instance = session.execute(query_to_get_token).first()
