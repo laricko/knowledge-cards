@@ -89,8 +89,9 @@ async def verify_email(token: str, session: Session = Depends(get_session)):
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "token not valid")
     query_to_get_user = select(user_db).where(user_db.c.id == token_instance.user_id)
     user = session.execute(query_to_get_user).first()
+    response = {"detail": "success"}
     if user.verified:
-        return {"detail": "success"}
+        return response
     query_to_make_user_verified = (
         update(user_db)
         .where(user_db.c.id == token_instance.user_id)
@@ -98,4 +99,4 @@ async def verify_email(token: str, session: Session = Depends(get_session)):
     )
     session.execute(query_to_make_user_verified)
     session.commit()
-    return {"detail": "success"}
+    return response

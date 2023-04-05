@@ -72,3 +72,13 @@ async def add_system_category(
 ):
     crud.add_system_category(id, user.id, session)
     return {"detail": "success"}
+
+
+@category_router.post("/{id}/remove-system", response_model=DetailResponse)
+async def remove_system_category(
+    id: int,
+    user: User = Depends(get_current_user_is_verified),
+    session: Session = Depends(get_session),
+):
+    crud.remove_system_category(id, user.id, session)
+    return {"detail": "success"}

@@ -80,3 +80,13 @@ def add_system_category(category_id: int, user_id: int, session: Session) -> Non
     session.execute(query)
     session.commit()
     return
+
+
+def remove_system_category(category_id: int, user_id: int, session: Session) -> None:
+    table_c = related_system_categories_with_user.c
+    query = delete(related_system_categories_with_user).where(
+        table_c.user_id == user_id, table_c.category_id == category_id
+    )
+    session.execute(query)
+    session.commit()
+    return
