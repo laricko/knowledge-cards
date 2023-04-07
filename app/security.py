@@ -1,14 +1,32 @@
 from datetime import datetime, timedelta
 
-from passlib.context import CryptContext
-from jose.exceptions import JWTError
 from jose import jwt
+from jose.exceptions import JWTError
+from passlib.context import CryptContext
+from fastapi import Request, HTTPException, status
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
 from config import get_settings
 
 
 settings = get_settings()
 password_context = CryptContext("bcrypt", deprecated="auto")
+invalid_token_exception = HTTPException(status.HTTP_400_BAD_REQUEST, "Invalid token")
+
+
+class JWTBearer(HTTPBearer):
+    def __init__(self, *args, auto_eror: bool = True, **kwargs):
+        super().__init__(*args, auto_error=auto_eror, **kwargs)
+
+    async def __call__(self, request: Request) -> HTTPAuthorizationCredentials:
+        credentials = await super().__call__(request)
+        if not credentials:
+            raise invalid_token_exception
+        else:
+            data = decode_access_token(credentials.credentials)
+            if data is None:
+                raise invalid_token_exception
+            return data
 
 
 def hash_password(password: str) -> str:

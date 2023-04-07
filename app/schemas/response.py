@@ -8,4 +8,5 @@ class DetailResponse(BaseModel):
     message = "success"
     return {"detail": message}
     """
+
     detail: str

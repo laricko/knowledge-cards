@@ -42,5 +42,5 @@ if __name__ == "__main__":
         host=settings.SITE_HOST,
         reload=True,
         forwarded_allow_ips="*",
-        workers=4
+        workers=4,
     )
