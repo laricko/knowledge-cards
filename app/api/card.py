@@ -1,7 +1,8 @@
 from fastapi import Depends, APIRouter, status
 from sqlalchemy.orm import Session
 
-from dependency import get_current_user_is_verified, get_session
+from dependencies.db import get_session
+from dependencies.auth import get_current_user_is_verified
 from schemas.user import User
 from schemas.card import CardIn, Card, CardsOrdering, CardUpdate
 from schemas.response import DetailResponse

@@ -14,3 +14,8 @@ api_router.include_router(user_router)
 api_router.include_router(card_router)
 api_router.include_router(category_router)
 api_router.include_router(suggest_router)
+
+
+@api_router.get("/")
+def hello_world():
+    return {"ping": "pong"}

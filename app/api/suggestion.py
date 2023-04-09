@@ -2,7 +2,7 @@ import openai
 from fastapi import Depends, APIRouter
 from pydantic import BaseModel
 
-from dependency import get_current_user_is_verified
+from dependencies.auth import get_current_user_is_verified
 from config import get_settings
 
 

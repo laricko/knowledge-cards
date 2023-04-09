@@ -1,20 +1,11 @@
-from typing import Generator
-
 from fastapi import HTTPException, status, Depends
 from sqlalchemy.orm import Session
 
 from schemas.user import User
-from db.base import SessionLocal
 from security import JWTBearer, invalid_token_exception
 from crud import user as crud
 
-
-def get_session() -> Generator:
-    try:
-        session = SessionLocal()
-        yield session
-    finally:
-        session.close()
+from .db import get_session
 
 
 async def get_current_user(

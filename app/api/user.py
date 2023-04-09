@@ -1,9 +1,9 @@
 from fastapi import Depends, APIRouter, HTTPException, status
 from sqlalchemy.orm import Session
 
-from dependency import get_session
 from schemas.user import User, UserIn
-from dependency import get_current_user
+from dependencies.db import get_session
+from dependencies.auth import get_current_user
 from crud import user as crud
 from services.send_verification_email import send_verification_email
 

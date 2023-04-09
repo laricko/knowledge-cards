@@ -29,6 +29,7 @@ class Settings(BaseSettings):
 
     OPENAI_API_KEY = config("OPENAI_API_KEY", str)
 
+    # TODO: implement system categories in database
     system_categories = ["Language English", "Language Russian"]
 
 

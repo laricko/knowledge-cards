@@ -1,15 +1,18 @@
 from logging.config import fileConfig
+import os
 
-from sqlalchemy import engine_from_config
-from sqlalchemy import pool
+from sqlalchemy import engine_from_config, create_engine
+from sqlalchemy import pool, text
 
 from alembic import context
 
-from config import get_settings
 from db.base import metadata
-
+from config import get_settings
 
 settings = get_settings()
+
+base_database_url = settings.DATABASE_URL
+postgres_db = settings._POSTGRES_DB
 
 
 # this is the Alembic Config object, which provides
@@ -44,7 +47,9 @@ def run_migrations_offline():
     script output.
 
     """
-    url = settings.DATABASE_URL
+    if os.environ.get("TESTING"):
+        raise ValueError("Running testing migrations offline currently not permitted.")
+    url = base_database_url
     context.configure(
         url=url,
         target_metadata=target_metadata,
@@ -63,12 +68,26 @@ def run_migrations_online():
     and associate a connection with the context.
 
     """
-    url = settings.DATABASE_URL
+    database_url = (
+        f"{base_database_url}_test" if os.environ.get("TESTING") else base_database_url
+    )
+    # handle testing config for migrations
+    if os.environ.get("TESTING"):
+        # connect to primary db
+        default_engine = create_engine(
+            base_database_url, pool_pre_ping=True, isolation_level="AUTOCOMMIT"
+        )
+        # drop testing db if it exists and create a fresh one
+        with default_engine.connect() as default_conn:
+            default_conn.execute(text(f"DROP DATABASE IF EXISTS {postgres_db}_test"))
+            default_conn.execute(text(f"CREATE DATABASE {postgres_db}_test"))
+
+    config.set_main_option("sqlalchemy.url", database_url)
     connectable = engine_from_config(
         config.get_section(config.config_ini_section),
         prefix="sqlalchemy.",
         poolclass=pool.NullPool,
-        url=url,
+        url=database_url,
     )
 
     with connectable.connect() as connection:
