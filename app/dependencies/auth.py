@@ -20,6 +20,6 @@ async def get_current_user(
 async def get_current_user_is_verified(
     user: User = Depends(get_current_user),
 ) -> User:
-    if not user.verified:
-        raise HTTPException(status.HTTP_403_FORBIDDEN, "You must verify your email")
-    return user
+    if user.verified:
+        return user
+    raise HTTPException(status.HTTP_403_FORBIDDEN, "You must verify your email")

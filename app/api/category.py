@@ -64,7 +64,6 @@ async def system_categories(session: Session = Depends(get_session)):
 @category_router.post(
     "/{id}/add-system",
     response_model=DetailResponse,
-    status_code=status.HTTP_201_CREATED,
 )
 async def add_system_category(
     id: int,

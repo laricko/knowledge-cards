@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from sqlalchemy import insert, literal_column
+from sqlalchemy import insert, literal_column, text
 
 from db.user import user as user_db
 from security import hash_password, create_access_token

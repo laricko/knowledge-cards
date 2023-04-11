@@ -1,7 +1,7 @@
 from fastapi.testclient import TestClient
 from fastapi import FastAPI, status
 from sqlalchemy.orm import Session
-from sqlalchemy import select, insert, literal_column
+from sqlalchemy import select, insert, literal_column, update
 from pytest import fixture
 
 from security import hash_password, decode_access_token
@@ -82,3 +82,8 @@ def test_verification(
     cur = db.execute(query)
     user = cur.first()._asdict()
     assert user["verified"] is True
+
+    # making unverified user back
+    query = update(user_db).where(user_db.c.id == user["id"]).values(verified=False)
+    db.execute(query)
+    db.commit()
