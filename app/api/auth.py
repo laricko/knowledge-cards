@@ -45,7 +45,7 @@ async def login(data: LoginData, session: Session = Depends(get_session)):
     if not password_match:
         raise exc
 
-    user["token"] = create_access_token({"sub": data.email})
+    user["token"] = create_access_token(data.email)
     return user
 
 

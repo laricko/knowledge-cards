@@ -61,7 +61,7 @@ def create_verification_token(user_id: int, session: Session) -> dict:
 
 
 def update_user(data: UserIn, user_id: int, session: Session) -> dict:
-    data = data.dict(exclude_unset=True)
+    data = data.dict(exclude_unset=True) # here partial update only
     data["updated"] = datetime.now()
     query = (
         update(user_db)

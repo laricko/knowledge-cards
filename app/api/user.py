@@ -11,12 +11,12 @@ from services.send_verification_email import send_verification_email
 user_router = APIRouter(prefix="/user", tags=["user"])
 
 
-@user_router.get("/", response_model=User)
+@user_router.get("/", response_model=User, name="user:get-self-user")
 async def self_user(user: User = Depends(get_current_user)):
     return user
 
 
-@user_router.patch("/", response_model=User)
+@user_router.patch("/", response_model=User, name="user:update-self-user")
 async def patch_self_user(
     data: UserIn,
     user: User = Depends(get_current_user),

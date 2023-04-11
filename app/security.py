@@ -37,16 +37,19 @@ def verify_passwrod(password: str, hash: str) -> bool:
     return password_context.verify(password, hash)
 
 
-def create_access_token(data: dict) -> str:
-    to_encode = dict(data)
+def create_access_token(email: str) -> str:
+    to_encode = dict()
     to_encode.update(
-        {"exp": datetime.utcnow() + timedelta(minutes=settings.JWT_EXPIRE_MINUTES)}
+        {
+            "exp": datetime.utcnow() + timedelta(minutes=settings.JWT_EXPIRE_MINUTES),
+            "sub": email,
+        }
     )
     token = jwt.encode(to_encode, settings.SECRET_KEY, settings.ALGORITHM)
     return token
 
 
-def decode_access_token(token: str):
+def decode_access_token(token: str) -> dict | None:
     try:
         return jwt.decode(token, settings.SECRET_KEY, settings.ALGORITHM)
     except JWTError:
