@@ -14,7 +14,7 @@ async def get_current_user(
     user = crud.get_user_by_email(data.get("sub"), session)
     if not user:
         raise invalid_token_exception
-    return User.parse_obj(user)
+    return user
 
 
 async def get_current_user_is_verified(

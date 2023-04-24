@@ -27,7 +27,7 @@ async def register(
     if user_exists:
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "email already exists")
     user = crud.create_user(data, session)
-    send_verification_email(user["id"], session)
+    send_verification_email(user.id, session)
     return data
 
 
@@ -36,17 +36,16 @@ async def login(data: LoginData, session: Session = Depends(get_session)):
     exc = HTTPException(
         status.HTTP_403_FORBIDDEN, "There is no user with such email and password"
     )
-    user = crud.get_user_by_email(data.email, session)
+    user = crud.get_user_by_email(data.email, session, get_password=True)
 
     if not user:
         raise exc
 
-    password_match = verify_passwrod(data.password, user["password"])
+    password_match = verify_passwrod(data.password, user.password)
     if not password_match:
         raise exc
 
-    user["token"] = create_access_token(data.email)
-    return user
+    return UserLoginResponse(token=create_access_token(data.email), **user.dict())
 
 
 verification_router = APIRouter(tags=["verification"])
@@ -59,5 +58,5 @@ async def verify_email(token: str, session: Session = Depends(get_session)):
     verification_token = crud.get_verification_token(token, session)
     if not verification_token:
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "token not valid")
-    crud.make_user_verified(verification_token["user_id"], session)
+    crud.make_user_verified(verification_token.user_id, session)
     return {"detail": "success"}

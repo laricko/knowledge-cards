@@ -14,8 +14,17 @@ class User(BaseModel):
     verified: bool
 
 
+class UserWithPassword(User):
+    password: str
+
+
 class UserIn(BaseModel):
     username: str | None
     email: EmailStr | None
     first_name: str | None
     last_name: str | None
+
+
+class Token(BaseModel):
+    user_id: int
+    value: str

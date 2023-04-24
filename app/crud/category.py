@@ -1,12 +1,13 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import insert, literal_column, select, update, delete, or_, desc
+from pydantic import parse_obj_as
 
 from db.card import category, related_system_categories_with_user
-from schemas.category import CategoryIn
+from schemas.category import CategoryIn, Category
 from utils.get_ordering import get_ordering
 
 
-def create_category(user_id: int, data: CategoryIn, session: Session) -> dict:
+def create_category(user_id: int, data: CategoryIn, session: Session) -> Category:
     query = (
         insert(category)
         .values(user_id=user_id, **data.dict())
@@ -14,7 +15,7 @@ def create_category(user_id: int, data: CategoryIn, session: Session) -> dict:
     )
     cur = session.execute(query)
     session.commit()
-    return cur.first()._asdict()
+    return Category.parse_obj(cur.first()._asdict())
 
 
 def get_category_for_user(
@@ -25,7 +26,7 @@ def get_category_for_user(
     ordering: str,
     limit: int,
     skip: int,
-) -> list[dict]:
+) -> list[Category]:
     title_filter = [category.c.title.ilike(f"%{title}%")] if title else []
     query = (
         select(category)
@@ -45,10 +46,10 @@ def get_category_for_user(
         .offset(skip)
     )
     cur = session.execute(query)
-    return cur.mappings().all()
+    return parse_obj_as(list[Category], cur.mappings().all())
 
 
-def update_category(category_id: int, data: CategoryIn, session: Session) -> dict:
+def update_category(category_id: int, data: CategoryIn, session: Session) -> Category:
     query = (
         update(category)
         .values(**data.dict(exclude_unset=True))
@@ -57,7 +58,7 @@ def update_category(category_id: int, data: CategoryIn, session: Session) -> dic
     )
     cur = session.execute(query)
     session.commit()
-    return cur.first()._asdict()
+    return Category.parse_obj(cur.first()._asdict())
 
 
 def delete_category(category_id: int, session: Session) -> None:
@@ -67,10 +68,10 @@ def delete_category(category_id: int, session: Session) -> None:
     return
 
 
-def get_system_categories(session: Session) -> list[dict]:
+def get_system_categories(session: Session) -> list[Category]:
     query = select(category).where(category.c.user_id == None)
     cur = session.execute(query)
-    return cur.mappings().all()
+    return parse_obj_as(list[Category], cur.mappings().all())
 
 
 def add_system_category(category_id: int, user_id: int, session: Session) -> None:
