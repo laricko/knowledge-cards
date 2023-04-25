@@ -1,4 +1,4 @@
-from sqlalchemy import desc, Table, Column
+from sqlalchemy import Column, Table, desc
 from sqlalchemy.sql.elements import UnaryExpression
 
 

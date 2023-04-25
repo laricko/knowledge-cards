@@ -1,10 +1,9 @@
 import openai
-from fastapi import Depends, APIRouter
+from fastapi import APIRouter, Depends
 from pydantic import BaseModel
 
-from dependencies.auth import get_current_user_is_verified
 from config import get_settings
-
+from dependencies.auth import get_current_user_is_verified
 
 suggest_router = APIRouter(
     prefix="/suggestion",

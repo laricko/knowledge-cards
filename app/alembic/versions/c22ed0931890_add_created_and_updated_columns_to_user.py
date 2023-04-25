@@ -17,7 +17,7 @@ depends_on = None
 
 
 # create_trigger_query = f"""
-# CREATE OR REPLACE FUNCTION update_datetime_updated_column() 
+# CREATE OR REPLACE FUNCTION update_datetime_updated_column()
 # RETURNS TRIGGER AS $update_datetime_updated_column$
 # BEGIN
 #     NEW.updated=now();

@@ -1,12 +1,12 @@
 from datetime import datetime
 
 from pydantic import parse_obj_as
+from sqlalchemy import delete, insert, literal_column, select, update
 from sqlalchemy.orm import Session
-from sqlalchemy import insert, literal_column, select, update, delete
 
-from utils.get_ordering import get_ordering
 from db.card import card
-from schemas.card import CardIn, CardUpdate, Card
+from schemas.card import Card, CardIn, CardUpdate
+from utils.get_ordering import get_ordering
 
 
 def get_cards_by_user(

@@ -1,14 +1,14 @@
-from fastapi.testclient import TestClient
 from fastapi import FastAPI, status
-from sqlalchemy.orm import Session
-from sqlalchemy import select, insert, literal_column, update
+from fastapi.testclient import TestClient
 from pytest import fixture
+from sqlalchemy import insert, literal_column, select, update
+from sqlalchemy.orm import Session
 
-from security import hash_password, decode_access_token
-from db.user import user as user_db, token as token_db
+from db.user import token as token_db
+from db.user import user as user_db
+from security import decode_access_token, hash_password
 
 from .utils import TEST_USER_PASSWORD
-
 
 TEST_VALUE_VERIFICATION_TOKEN = "string"
 

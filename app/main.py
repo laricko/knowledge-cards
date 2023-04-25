@@ -1,10 +1,9 @@
-from uvicorn import run
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from uvicorn import run
 
 from config import get_settings
 from routers import api_router
-
 
 settings = get_settings()
 

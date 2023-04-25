@@ -1,8 +1,8 @@
-from sqlalchemy.orm import Session
 from sqlalchemy import insert, literal_column, text
+from sqlalchemy.orm import Session
 
 from db.user import user as user_db
-from security import hash_password, create_access_token
+from security import create_access_token, hash_password
 
 TEST_USER_PASSWORD = "string"
 

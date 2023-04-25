@@ -1,13 +1,12 @@
-from fastapi import Depends, APIRouter, status
+from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
 
-from dependencies.db import get_session
-from dependencies.auth import get_current_user_is_verified
-from schemas.user import User
-from schemas.card import CardIn, Card, CardsOrdering, CardUpdate
-from schemas.response import DetailResponse
 from crud import card as crud
-
+from dependencies.auth import get_current_user_is_verified
+from dependencies.db import get_session
+from schemas.card import Card, CardIn, CardsOrdering, CardUpdate
+from schemas.response import DetailResponse
+from schemas.user import User
 
 card_router = APIRouter(
     prefix="/card", tags=["card"], dependencies=[Depends(get_current_user_is_verified)]

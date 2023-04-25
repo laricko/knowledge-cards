@@ -1,13 +1,12 @@
-from fastapi import Depends, APIRouter, status
+from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
 
-from dependencies.db import get_session
-from dependencies.auth import get_current_user_is_verified
-from schemas.category import CategoryIn, Category, CategoryOrdering, CategoryUpdate
-from schemas.user import User
-from schemas.response import DetailResponse
 from crud import category as crud
-
+from dependencies.auth import get_current_user_is_verified
+from dependencies.db import get_session
+from schemas.category import Category, CategoryIn, CategoryOrdering, CategoryUpdate
+from schemas.response import DetailResponse
+from schemas.user import User
 
 category_router = APIRouter(
     prefix="/category",

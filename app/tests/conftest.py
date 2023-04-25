@@ -1,16 +1,16 @@
-from typing import Generator
 import os
+from typing import Generator
 
-from fastapi.testclient import TestClient
 from fastapi import FastAPI
+from fastapi.testclient import TestClient
 from pytest import fixture
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, Session
+from sqlalchemy.orm import Session, sessionmaker
+
 import alembic
 from alembic.config import Config
-
-from dependencies.auth import get_session
 from config import get_settings
+from dependencies.auth import get_session
 
 from .utils import create_user
 

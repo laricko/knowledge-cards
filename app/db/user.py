@@ -1,16 +1,15 @@
 from sqlalchemy import (
+    Boolean,
     Column,
+    DateTime,
+    ForeignKey,
     Integer,
     String,
     Table,
-    Boolean,
-    ForeignKey,
-    DateTime,
     func,
 )
 
 from .base import metadata
-
 
 user = Table(
     "user",

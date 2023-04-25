@@ -1,5 +1,5 @@
-from pydantic import BaseModel, EmailStr, validator
 from fastapi import HTTPException, status
+from pydantic import BaseModel, EmailStr, validator
 
 from .user import User
 

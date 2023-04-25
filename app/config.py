@@ -1,9 +1,8 @@
-from os import environ
 from functools import lru_cache
+from os import environ
 
-from starlette.config import Config
 from pydantic import BaseSettings, PostgresDsn
-
+from starlette.config import Config
 
 config = Config("development.env")
 

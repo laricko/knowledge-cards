@@ -1,13 +1,12 @@
 from datetime import datetime, timedelta
 
+from fastapi import HTTPException, Request, status
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from jose import jwt
 from jose.exceptions import JWTError
 from passlib.context import CryptContext
-from fastapi import Request, HTTPException, status
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
 from config import get_settings
-
 
 settings = get_settings()
 password_context = CryptContext("bcrypt", deprecated="auto")

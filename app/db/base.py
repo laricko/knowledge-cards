@@ -1,5 +1,4 @@
-from sqlalchemy import create_engine
-from sqlalchemy import MetaData
+from sqlalchemy import MetaData, create_engine
 from sqlalchemy.orm import sessionmaker
 
 from config import get_settings

@@ -4,6 +4,9 @@ backend_shell:
 psql:
 	docker exec -it cards_db psql -U postgres
 
+lint:
+	isort app --src=app/ --skip=app/alembic --profile=black && black app --exclude=app/alembic
+
 test:
 	docker exec -it cards_backend pytest -s
 

@@ -1,7 +1,7 @@
 from fastapi import FastAPI, status
 from fastapi.testclient import TestClient
-from sqlalchemy.orm import Session
 from sqlalchemy import select
+from sqlalchemy.orm import Session
 
 from db.user import user as user_db
 
@@ -19,7 +19,9 @@ def test_self_user(app: FastAPI, client: TestClient, unverified_user):
     assert response_data["id"] == unverified_user["id"]
 
 
-def test_patch_self_user(app: FastAPI, client: TestClient, db: Session, unverified_user):
+def test_patch_self_user(
+    app: FastAPI, client: TestClient, db: Session, unverified_user
+):
     token = get_auth_token(unverified_user)
     data = {"first_name": "UPDATED NAME"}
     response = client.patch(

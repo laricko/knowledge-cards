@@ -1,9 +1,9 @@
-from fastapi import HTTPException, status, Depends
+from fastapi import Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
+from crud import user as crud
 from schemas.user import User
 from security import JWTBearer, invalid_token_exception
-from crud import user as crud
 
 from .db import get_session
 

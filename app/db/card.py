@@ -1,18 +1,17 @@
 from sqlalchemy import (
+    Boolean,
     Column,
+    DateTime,
+    ForeignKey,
+    Integer,
     String,
     Table,
-    ForeignKey,
     Text,
-    Integer,
-    DateTime,
-    func,
-    Boolean,
     UniqueConstraint,
+    func,
 )
 
 from .base import metadata
-
 
 category = Table(
     "category",

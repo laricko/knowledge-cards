@@ -1,13 +1,14 @@
-from uuid import uuid4
 from datetime import datetime
+from uuid import uuid4
 
+from sqlalchemy import insert, literal_column, select, update
 from sqlalchemy.orm import Session
-from sqlalchemy import insert, select, update, literal_column
 
-from db.user import user as user_db, token as token_db
-from security import hash_password
+from db.user import token as token_db
+from db.user import user as user_db
 from schemas.auth import RegisterData
-from schemas.user import UserIn, Token, User, UserWithPassword
+from schemas.user import Token, User, UserIn, UserWithPassword
+from security import hash_password
 
 
 def create_user(data: RegisterData, session: Session) -> User:

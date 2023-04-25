@@ -1,13 +1,12 @@
-from fastapi import APIRouter, HTTPException, status, Depends
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
-from schemas.auth import RegisterData, UserLoginResponse, LoginData
-from schemas.response import DetailResponse
-from dependencies.db import get_session
-from security import verify_passwrod, create_access_token
 from crud import user as crud
+from dependencies.db import get_session
+from schemas.auth import LoginData, RegisterData, UserLoginResponse
+from schemas.response import DetailResponse
+from security import create_access_token, verify_passwrod
 from services.send_verification_email import send_verification_email
-
 
 auth_router = APIRouter(prefix="/auth", tags=["auth"])
 

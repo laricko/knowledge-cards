@@ -1,12 +1,11 @@
 from fastapi import FastAPI, status
 from fastapi.testclient import TestClient
-from sqlalchemy.orm import Session
 from sqlalchemy import select
+from sqlalchemy.orm import Session
 
 from db.card import card as card_db
 
 from .utils import get_auth_token
-
 
 TEST_CARD_TITLE = "Card question"
 

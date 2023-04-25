@@ -1,9 +1,9 @@
-from sqlalchemy.orm import Session
-from sqlalchemy import insert, literal_column, select, update, delete, or_, desc
 from pydantic import parse_obj_as
+from sqlalchemy import delete, desc, insert, literal_column, or_, select, update
+from sqlalchemy.orm import Session
 
 from db.card import category, related_system_categories_with_user
-from schemas.category import CategoryIn, Category
+from schemas.category import Category, CategoryIn
 from utils.get_ordering import get_ordering
 
 
