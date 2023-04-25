@@ -1,0 +1,15 @@
+name: test
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run dev container
+        run: docker-compose -f docker-compose.dev up -d
+      - name: Test with pytest
+        run: docker exec -it cards_backend pytest -s
