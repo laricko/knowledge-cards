@@ -9,7 +9,7 @@ from .db import get_session
 
 
 async def get_current_user(
-    data: str = Depends(JWTBearer()), session: Session = Depends(get_session)
+    data: dict = Depends(JWTBearer()), session: Session = Depends(get_session)
 ) -> User:
     user = crud.get_user_by_email(data.get("sub"), session)
     if not user:

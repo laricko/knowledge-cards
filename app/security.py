@@ -17,8 +17,8 @@ class JWTBearer(HTTPBearer):
     def __init__(self, *args, auto_eror: bool = True, **kwargs):
         super().__init__(*args, auto_error=auto_eror, **kwargs)
 
-    async def __call__(self, request: Request) -> HTTPAuthorizationCredentials:
-        credentials = await super().__call__(request)
+    async def __call__(self, request: Request) -> dict:
+        credentials: HTTPAuthorizationCredentials = await super().__call__(request)
         if not credentials:
             raise invalid_token_exception
         else:

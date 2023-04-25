@@ -26,7 +26,7 @@ async def register(
     if user_exists:
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "email already exists")
     user = crud.create_user(data, session)
-    send_verification_email(user.id, session)
+    send_verification_email(user, session)
     return data
 
 
@@ -57,5 +57,6 @@ async def verify_email(token: str, session: Session = Depends(get_session)):
     verification_token = crud.get_verification_token(token, session)
     if not verification_token:
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "token not valid")
+
     crud.make_user_verified(verification_token.user_id, session)
     return {"detail": "success"}

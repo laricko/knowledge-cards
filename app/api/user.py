@@ -26,7 +26,8 @@ async def patch_self_user(
     )
     if exists:
         raise HTTPException(status.HTTP_400_BAD_REQUEST, f"{field} already exists")
+    
     updated_user = crud.update_user(data, user.id, session)
     if user.email != updated_user.email:
-        send_verification_email(user.id, session)
+        send_verification_email(user, session)
     return updated_user
