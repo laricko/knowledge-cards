@@ -1,8 +1,8 @@
 from sqlalchemy.orm import Session
 
 from crud import user as crud
-from utils.send_email import send_email
 from schemas.user import User
+from utils.send_email import send_email
 
 
 def send_verification_email(user: User, session: Session) -> None:

@@ -18,6 +18,8 @@ openai = "*"
 [dev-packages]
 pytest = "*"
 httpx = "*"
+black = "*"
+isort = "*"
 
 [requires]
 python_version = "3.11"
