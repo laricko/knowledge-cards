@@ -10,6 +10,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Run dev container
-        run: docker-compose -f docker-compose.dev up -d
+        run: docker-compose -f docker-compose.dev.yml up -d
       - name: Test with pytest
         run: docker exec -it cards_backend pytest -s
