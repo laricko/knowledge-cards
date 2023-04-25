@@ -8,7 +8,7 @@ lint:
 	isort app --src=app/ --skip=app/alembic --profile=black && black app --exclude=app/alembic
 
 test:
-	docker exec -it cards_backend pytest -s
+	docker exec -t cards_backend pytest -s
 
 dump:
 	docker exec -t cards_db pg_dumpall -c -U postgres > dump_`date +%d-%m-%Y"_"%H_%M_%S`.sql
