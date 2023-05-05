@@ -3,9 +3,16 @@ from sqlalchemy.orm import Session
 
 from crud import user as crud
 from dependencies.db import get_session
-from schemas.auth import LoginData, RegisterData, UserLoginResponse
+from schemas.auth import (
+    LoginData,
+    RefreshToken,
+    RegisterData,
+    Token,
+    TokenResponse,
+    UserWithTokensResponse,
+)
 from schemas.response import DetailResponse
-from security import create_access_token, verify_passwrod
+from security import create_access_token, decode_access_token, verify_passwrod
 from services.send_verification_email import send_verification_email
 
 auth_router = APIRouter(prefix="/auth", tags=["auth"])
@@ -30,8 +37,10 @@ async def register(
     return data
 
 
-@auth_router.post("/login", response_model=UserLoginResponse, name="auth:login")
-async def login(data: LoginData, session: Session = Depends(get_session)):
+@auth_router.post(
+    "/access-token", response_model=UserWithTokensResponse, name="auth:login"
+)
+async def access_token(data: LoginData, session: Session = Depends(get_session)):
     exc = HTTPException(
         status.HTTP_403_FORBIDDEN, "There is no user with such email and password"
     )
@@ -44,7 +53,25 @@ async def login(data: LoginData, session: Session = Depends(get_session)):
     if not password_match:
         raise exc
 
-    return UserLoginResponse(token=create_access_token(data.email), **user.dict())
+    return UserWithTokensResponse(
+        token=create_access_token(data.email),
+        refresh_token=create_access_token(data.email, refresh=True),
+        **user.dict()
+    )
+
+
+@auth_router.post("/refresh", response_model=TokenResponse)
+async def refresh_token(data: RefreshToken):
+    token = decode_access_token(data.refresh_token)
+    user = crud.get_user_by_email(token.get("sub"))
+    return TokenResponse(token=create_access_token(user.email))
+
+
+@auth_router.post("/verify-token", response_model=Token)
+async def verify_token(data: Token):
+    if decode_access_token(data.token):
+        return Token(token=data.token)
+    raise HTTPException(status.HTTP_400_BAD_REQUEST, "Token is invalid")
 
 
 verification_router = APIRouter(tags=["verification"])
@@ -59,4 +86,4 @@ async def verify_email(token: str, session: Session = Depends(get_session)):
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "token not valid")
 
     crud.make_user_verified(verification_token.user_id, session)
-    return {"detail": "success"}
+    return DetailResponse(detail="success")

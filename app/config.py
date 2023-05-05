@@ -23,6 +23,7 @@ class Settings(BaseSettings):
     environ["DATABASE_URL"] = DATABASE_URL
 
     JWT_EXPIRE_MINUTES = config("JWT_EXPIRE_MINUTES", int)
+    REFRESH_JWT_EXPIRE_MINUTES = config("REFRESH_JWT_EXPIRE_MINUTES", int)
     ALGORITHM = config("ALGORITHM")
     SECRET_KEY = config("SECRET_KEY")
 

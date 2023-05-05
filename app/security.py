@@ -36,14 +36,18 @@ def verify_passwrod(password: str, hash: str) -> bool:
     return password_context.verify(password, hash)
 
 
-def create_access_token(email: str) -> str:
-    to_encode = dict()
-    to_encode.update(
-        {
-            "exp": datetime.utcnow() + timedelta(minutes=settings.JWT_EXPIRE_MINUTES),
-            "sub": email,
-        }
+def create_access_token(email: str, refresh=False) -> str:
+    delta = (
+        settings.JWT_EXPIRE_MINUTES
+        if not refresh
+        else settings.REFRESH_JWT_EXPIRE_MINUTES
     )
+
+    to_encode = {
+        "exp": datetime.utcnow() + timedelta(minutes=delta),
+        "sub": email,
+    }
+
     token = jwt.encode(to_encode, settings.SECRET_KEY, settings.ALGORITHM)
     return token
 

@@ -56,4 +56,4 @@ async def update_card(
 @card_router.delete("/{id}", response_model=DetailResponse)
 async def delete_card(id: int, session: Session = Depends(get_session)):
     crud.delete_card(id, session)
-    return {"detail": "success"}
+    return DetailResponse(detail="success")

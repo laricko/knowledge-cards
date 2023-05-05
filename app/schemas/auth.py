@@ -21,5 +21,17 @@ class LoginData(BaseModel):
     password: str
 
 
-class UserLoginResponse(User):
+class RefreshToken(BaseModel):
+    refresh_token: str
+
+
+class Token(BaseModel):
     token: str
+
+
+class TokenResponse(Token, RefreshToken):
+    ...
+
+
+class UserWithTokensResponse(User, TokenResponse):
+    ...

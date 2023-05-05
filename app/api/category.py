@@ -43,7 +43,7 @@ async def create_category(
 @category_router.delete("/{id}", response_model=DetailResponse)
 async def delete_category(id: int, session: Session = Depends(get_session)):
     crud.delete_category(id, session)
-    return {"detail": "success"}
+    return DetailResponse(detail="success")
 
 
 @category_router.patch("/{id}", response_model=Category)
@@ -70,7 +70,7 @@ async def add_system_category(
     session: Session = Depends(get_session),
 ):
     crud.add_system_category(id, user.id, session)
-    return {"detail": "success"}
+    return DetailResponse(detail="success")
 
 
 @category_router.post("/{id}/remove-system", response_model=DetailResponse)
@@ -80,4 +80,4 @@ async def remove_system_category(
     session: Session = Depends(get_session),
 ):
     crud.remove_system_category(id, user.id, session)
-    return {"detail": "success"}
+    return DetailResponse(detail="success")

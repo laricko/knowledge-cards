@@ -28,4 +28,4 @@ async def get_suggestion(prompt: str):
         temperature=0.6,
     )
     result = response.choices[0].text
-    return {"result": result.strip()}
+    return SuggestionResponse(result=result.strip())
